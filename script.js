@@ -1,34 +1,35 @@
-const form = document.querySelector(".contact-form-container");
+document.addEventListener("DOMContentLoaded", function () {
+    const addTaskButton = document.querySelector('#addTaskBtn');
+    const taskInput = document.querySelector('#taskInput');
+    const taskList = document.querySelector('#taskList');
 
-function sendEmail(){
-    const message = document.getElementById("message");
-    const subject = document.getElementById("name");
-    const bodyMessage = message.value;
+    function createNewRow(inputValue) {
+        const row = document.createElement('li');
+        row.classList.add('task-item')
+        const text = document.createTextNode(inputValue);
 
-    Email.send({
-        Host : "smtp.elasticemail.com",
-        Username : "anjelikaharutyunyan03@gmail.com",
-        Password : "A404DB054F074431136C8D8B7B5FCFF744AF",
-        To : 'anjelikaharutyunyan03@gmail.com',
-        From : "anjelikaharutyunyan03@gmail.com",
-        Subject : subject,
-        Body : bodyMessage
-    }).then(
-        message => alert(message)
-    );
-}
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = 'x';
+        deleteButton.classList.add('delete-task'); 
+        deleteButton.addEventListener('click', function () {
+            deleteRow(row);
+        });
 
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    sendEmail();
+        row.appendChild(text);
+        row.appendChild(deleteButton); 
+        taskList.appendChild(row);
+
+        taskInput.value = '';
+    }
+
+    function deleteRow(row) {
+        taskList.removeChild(row); 
+    }
+
+    addTaskButton.addEventListener('click', function () {
+        const inputValue = taskInput.value.trim();
+        if (inputValue) {
+            createNewRow(inputValue);
+        }
+    });
 });
-
-function toggleMobileMenu() {
-    const menuItems = document.querySelector('.menu-items');
-    const hamMenu = document.querySelector('.header__main-ham-menu');
-    const hamMenuClose = document.querySelector('.header__main-ham-menu-close');
-    menuItems.classList.toggle('mobile-menu-open');
-    hamMenu.classList.toggle('d-none');
-    hamMenuClose.classList.toggle('d-none');
-  }
-  
